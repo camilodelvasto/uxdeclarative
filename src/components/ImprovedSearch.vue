@@ -4,7 +4,7 @@
         <input v-model="searchTerm" placeholder="Search users..." class="search-input" @input="updateUrl" @keydown.enter="searchUsers" />
         <button @click="searchUsers" class="search-button">Search</button>
       </div>
-      <div v-if="users.length">
+      <div v-if="users?.length">
         <ul>
           <li v-for="user in users" :key="user.id">
             <h3>{{ user.name }}</h3>
