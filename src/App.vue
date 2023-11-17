@@ -31,25 +31,27 @@ body, button, input, textarea {
 
 .search-input {
   flex: 1;
-  padding: 0.5rem;
-  height: 36px; /* Making it same height as button */
+  font-size: 1.05rem;
+  padding: 1rem;
+  height: 46px; /* Making it same height as button */
   border: 1px solid #ccc;
   margin-right: 1rem; /* Margin between search box and button */
   border-radius: 5px; /* Slightly rounded corners */
 }
 
 .search-button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   background-color: #4CAF75; /* Green color */
   border: none;
   cursor: pointer;
   color: white;
-  height: 36px; /* Making it same height as input */
+  font-size: 1.05rem;
+  height: 46px; /* Making it same height as input */
   border-radius: 5px; /* Slightly rounded corners */
   transition: all 0.1s ease-in-out;
   &.large {
-    font-size: 1.1rem;
-    padding: 0.75rem 1.25rem;
+    font-size: 1.05rem;
+    padding: 0.6rem 1.5rem;
     height: auto;
   }
   &:hover {
