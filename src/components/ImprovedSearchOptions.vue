@@ -7,7 +7,7 @@
     <Transition name="fade" mode="in-out">
       <div class="container legato" v-if="ready2">
         <div class="search-bar">
-          <input v-model="searchTerm" placeholder="Search users..." class="search-input" @input="updateUrl" @keydown.enter="searchUsers" />
+          <input ref="input" v-model="searchTerm" placeholder="Search users..." class="search-input" @input="updateUrl" @keydown.enter="searchUsers" />
           <button @click="searchUsers" class="search-button">Search</button>
         </div>
         <Transition name="fade" mode="in-out">
@@ -62,15 +62,17 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     if (this.$route.path.endsWith('/results')) {
       this.searchUsers();
     }
     setTimeout(() => {
       this.ready = true;
     }, 10)
-    setTimeout(() => {
+    setTimeout(async () => {
       this.ready2 = true;
+      await this.$nextTick()
+      this.$refs.input.focus();
     }, 200)
     setTimeout(() => {
       this.ready3 = true;
