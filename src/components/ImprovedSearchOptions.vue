@@ -71,10 +71,10 @@ export default {
     }, 10)
     setTimeout(() => {
       this.ready2 = true;
-    }, 200)
+    }, 400)
     setTimeout(() => {
       this.ready3 = true;
-    }, 300)
+    }, 900)
   }
 }
 </script>
