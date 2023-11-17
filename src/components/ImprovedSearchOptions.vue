@@ -71,7 +71,7 @@ export default {
     }, 10)
     setTimeout(() => {
       this.ready2 = true;
-    }, 400)
+    }, 200)
     setTimeout(() => {
       this.ready3 = true;
     }, 900)
@@ -80,13 +80,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
 </style>

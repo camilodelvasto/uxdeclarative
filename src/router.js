@@ -6,11 +6,17 @@ import ImprovedSearch from '@/components/ImprovedSearchOptions.vue'
 const routes = [
   {
     path: '/',
-    component: Home
+    component: Home,
+    meta: {
+      transition: 'none'
+    }
   },
   {
     path: '/one',
-    component: StandardSearch
+    component: StandardSearch,
+    meta: {
+      transition: 'none'
+    }
   },
   {
     path: '/two',

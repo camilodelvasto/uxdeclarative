@@ -3,7 +3,7 @@
     <h1>Laws of UX: Doherty threshold</h1>
     <div class="flexr">
       <button class="search-button large" @click="goTo('/one')">Standard</button>
-      <button class="search-button large" @click="goTo('/two', 100)">Improved</button>
+      <button class="search-button large" @click="goTo('/two', 50)">Improved</button>
     </div>
   </div>
 </template>
