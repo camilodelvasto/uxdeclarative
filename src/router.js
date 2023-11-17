@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/components/Home.vue'
 import StandardSearch from '@/components/StandardSearch.vue'
-import ImprovedSearch from '@/components/ImprovedSearch.vue'
+import ImprovedSearch from '@/components/ImprovedSearchOptions.vue'
 
 const routes = [
   {

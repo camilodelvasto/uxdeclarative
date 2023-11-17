@@ -29,30 +29,30 @@ let searchTerm = ref(route.params.term || '');
 const users = ref([]);
 
 const updateUrl = () => {
-    users.value = []; 
-    router.replace(`/two/${searchTerm.value}`);
+  users.value = []; 
+  router.replace(`/two/${searchTerm.value}`);
 };
 
 const searchUsers = async () => {
-    if(!route.path.endsWith('/results')) {
-        router.push(`/two/${searchTerm.value}/results`);
-    }
-    const response = await axios.get(`https://jsonplaceholder.typicode.com/users?username=${searchTerm.value}`);
-    users.value = response.data;
+  if(!route.path.endsWith('/results')) {
+      router.push(`/two/${searchTerm.value}/results`);
+  }
+  const response = await axios.get(`https://jsonplaceholder.typicode.com/users?username=${searchTerm.value}`);
+  users.value = response.data;
 }
 
 onMounted(() => {
-    if (route.path.endsWith('/results')) {
-        searchUsers();
-    }
+  if (route.path.endsWith('/results')) {
+      searchUsers();
+  }
 });
 
 watch(route, (to, from) => {
-    if (to.path.endsWith('/results')) {
-        searchUsers();
-    } else if (!to.path.endsWith('/results')) {
-        users.value = [];
-    }
+  if (to.path.endsWith('/results')) {
+      searchUsers();
+  } else if (!to.path.endsWith('/results')) {
+      users.value = [];
+  }
 });
 </script>
 

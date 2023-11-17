@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 body, button, input, textarea {
   font-family: 'Avenir', sans-serif;
   margin: 0;
@@ -16,7 +16,12 @@ body, button, input, textarea {
 }
 
 .container {
-  padding: 2rem;
+  margin: auto;
+  width: 400px;
+  margin-top: 200px;
+  &.legato {
+    transition: all 0.2s ease-in-out;
+  }
 }
 
 .search-bar {
@@ -41,6 +46,22 @@ body, button, input, textarea {
   color: white;
   height: 36px; /* Making it same height as input */
   border-radius: 5px; /* Slightly rounded corners */
+  transition: all 0.1s ease-in-out;
+  &.large {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.25rem;
+    height: auto;
+  }
+  &:hover {
+    background-color: #45a049;
+  }
+  &:focus {
+    outline: 1px solid rgba(0, 0, 0, 0.3);
+  }
+  &:active {
+    transform: scale(1.05);
+    background-color: #3e8e41 !important;
+  }
 }
 
 .search-button:hover {

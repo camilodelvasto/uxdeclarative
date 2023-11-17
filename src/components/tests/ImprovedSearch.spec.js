@@ -132,7 +132,6 @@ describe('ImprovedSearch.vue', () => {
           }
         }
       ];
-
       axios.get.mockResolvedValue({
         data: usersMock,
       });
