@@ -25,8 +25,10 @@
   const users = ref([])
   
   const searchUsers = async () => {
-    const response = await axios.get(`https://jsonplaceholder.typicode.com/users?username=${searchTerm.value}`)
-    users.value = response.data
+    setTimeout(async () => {
+      const response = await axios.get(`https://jsonplaceholder.typicode.com/users?username=${searchTerm.value}`)
+      users.value = response.data
+    }, 400)
   }
   </script>
   
