@@ -76,6 +76,9 @@ button {
     cursor: not-allowed;
     opacity: 0.5;
     background-color: #ccc;
+    &:hover, &:focus, &:active, &:focus:active, &:hover:active {
+      background-color: #ccc !important;
+    }
   }
 }
 
@@ -112,6 +115,8 @@ button {
   margin-bottom: 1rem;
   h3 {
     margin-bottom: 0.2em;
+    display: flex;
+    justify-content: space-between;
   }
   p {
     line-height: 1;
