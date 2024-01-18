@@ -13,7 +13,9 @@
           <div class="user" v-if="user && imageUrl">
             <h3>{{ user.name }}
               <span class="alignr">
-                <span v-if="hasBeneficiaryAdded">[ b ]</span> <span v-if="hasClaimFiled">[ c ]</span>
+                <span v-if="beneficiaryCount === 1">[ b ]</span>
+                <span v-if="beneficiaryCount > 1">[ {{ beneficiaryCount }}*b ]</span>
+                <span v-if="hasClaimFiled">[ c ]</span>
               </span>
             </h3>
             <p><span class="left">Email:</span><span class="right">{{ user.email }}</span></p>
@@ -43,12 +45,12 @@ const user = ref(null);
 const isGenerating = ref(false);
 
 // Derived State from Route Params
-const hasBeneficiaryAdded = computed(() => route.params.ben === '1');
+const beneficiaryCount = computed(() => parseInt(route.params.ben) || 0);
 const hasClaimFiled = computed(() => route.params.claim === '1');
 
 // New computed properties based on route parameters
 const isCreatePolicyDisabled = computed(() => seed.value !== null);
-const isAddBeneficiaryDisabled = computed(() => seed.value === null || hasBeneficiaryAdded.value || hasClaimFiled.value);
+const isAddBeneficiaryDisabled = computed(() => seed.value === null || beneficiaryCount.value > 4 || hasClaimFiled.value);
 const isFileClaimDisabled = computed(() => seed.value === null || hasClaimFiled.value);
 const isClearDataDisabled = computed(() => seed.value === null);
 
@@ -77,7 +79,7 @@ const handleCreatePolicy = async () => {
 };
 
 const handleAddBeneficiary = () => {
-  navigate({ ben: '1' });
+  navigate({ ben: (beneficiaryCount.value + 1).toString() });
 };
 
 const handleFileClaim = () => {

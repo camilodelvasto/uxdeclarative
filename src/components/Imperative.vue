@@ -13,7 +13,9 @@
           <div class="user" v-if="user && imageUrl">
             <h3>{{ user.name }}
               <span class="alignr">
-                <span v-if="hasAdditionalBeneficiaries">[ b ]</span> <span v-if="hasClaim">[ c ]</span>
+                <span v-if="beneficiaryCount === 1">[ b ]</span>
+                <span v-if="beneficiaryCount > 1">[ {{ beneficiaryCount }}*b ]</span>
+                <span v-if="hasClaim">[ c ]</span>
               </span>
             </h3>
             <p><span class="left">Email:</span><span class="right">{{ user.email }}</span></p>
@@ -42,7 +44,7 @@ const isCreatePolicyDisabled = ref(false);
 const isAddBeneficiaryDisabled = ref(true);
 const isFileClaimDisabled = ref(true);
 const isClearDataDisabled = ref(true);
-const hasAdditionalBeneficiaries = ref(false);
+const beneficiaryCount = ref(false);
 const hasClaim = ref(false);
 
 const generateSeed = async () => {
@@ -70,8 +72,8 @@ const generateSeed = async () => {
 };
 
 const addBeneficiary = () => {
-  hasAdditionalBeneficiaries.value = true;
-  isAddBeneficiaryDisabled.value = true;
+  beneficiaryCount.value = beneficiaryCount.value < 4 ? beneficiaryCount.value + 1 : 5;
+  isAddBeneficiaryDisabled.value = beneficiaryCount.value > 4;
 };
 const fileClaim = () => {
   hasClaim.value = true;
@@ -85,7 +87,7 @@ const clearData = () => {
   isAddBeneficiaryDisabled.value = true;
   isFileClaimDisabled.value = true;
   isClearDataDisabled.value = true;
-  hasAdditionalBeneficiaries.value = false;
+  beneficiaryCount.value = false;
   hasClaim.value = false;
 };
 
