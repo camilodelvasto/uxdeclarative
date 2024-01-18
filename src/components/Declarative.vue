@@ -40,11 +40,11 @@ const route = useRoute();
 const router = useRouter();
 
 // Reactive State
-const seed = ref(route.params.seed || null);
 const user = ref(null);
 const isGenerating = ref(false);
 
 // Derived State from Route Params
+const seed = computed(() => route.params.seed || null);
 const beneficiaryCount = computed(() => parseInt(route.params.ben) || 0);
 const hasClaimFiled = computed(() => route.params.claim === '1');
 
@@ -73,7 +73,6 @@ const handleCreatePolicy = async () => {
   await new Promise((resolve) => setTimeout(resolve, delay));
 
   const newSeed = Math.floor(Math.random() * 10) + 1;
-  seed.value = newSeed;
   navigate({ seed: newSeed, ben: '0', claim: '0' });
   isGenerating.value = false;
 };
@@ -87,8 +86,6 @@ const handleFileClaim = () => {
 };
 
 const handleClearData = () => {
-  seed.value = null;
-  user.value = null;
   navigate({ seed: null, ben: '0', claim: '0' });
 };
 
@@ -101,13 +98,14 @@ const fetchUserData = async (userId) => {
   }
 };
 
-// Watchers
-watch(() => route.params.seed, (newSeed) => {
+// Watcher for seed
+watch(seed, (newSeed) => {
   if (newSeed) {
     fetchUserData(newSeed);
+  } else {
+    user.value = null;
   }
 }, { immediate: true });
-
 
 // Image URL Computed Property
 const imageUrl = computed(() => {

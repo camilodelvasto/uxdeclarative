@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="button-bar">
-      <button @click="generateSeed" class="fixie" :disabled="isCreatePolicyDisabled">Create Policy</button>
-      <button @click="addBeneficiary" class="fixie" :disabled="isAddBeneficiaryDisabled">Add Beneficiary</button>
-      <button @click="fileClaim" class="fixie" :disabled="isFileClaimDisabled">File <br>Claim</button>
-      <button @click="clearData" class="fixie" :disabled="isClearDataDisabled">Clear<br>Data</button>
+      <button @click="generateSeedHandler" class="fixie" :disabled="isCreatePolicyDisabled">Create Policy</button>
+      <button @click="addBeneficiaryHandler" class="fixie" :disabled="isAddBeneficiaryDisabled">Add Beneficiary</button>
+      <button @click="fileClaimHandler" class="fixie" :disabled="isFileClaimDisabled">File <br>Claim</button>
+      <button @click="clearDataHandler" class="fixie" :disabled="isClearDataDisabled">Clear<br>Data</button>
     </div>
     <div class="results">
       <div class="seed">Policy ID: {{ isGenerating ? 'Generating...' : '' }}  {{ seed !== null ? seed : '' }}</div>
@@ -47,7 +47,7 @@ const isClearDataDisabled = ref(true);
 const beneficiaryCount = ref(false);
 const hasClaim = ref(false);
 
-const generateSeed = async () => {
+const generateSeedHandler = async () => {
   if (isGenerating) {
     return;
   }
@@ -71,16 +71,16 @@ const generateSeed = async () => {
   isGenerating = false;
 };
 
-const addBeneficiary = () => {
+const addBeneficiaryHandler = () => {
   beneficiaryCount.value = beneficiaryCount.value < 4 ? beneficiaryCount.value + 1 : 5;
   isAddBeneficiaryDisabled.value = beneficiaryCount.value > 4;
 };
-const fileClaim = () => {
+const fileClaimHandler = () => {
   hasClaim.value = true;
   isAddBeneficiaryDisabled.value = true;
   isFileClaimDisabled.value = true;
 };
-const clearData = () => {
+const clearDataHandler = () => {
   seed.value = null;
   user.value = null;
   isCreatePolicyDisabled.value = false;
