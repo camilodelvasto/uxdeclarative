@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/components/Home.vue'
-import StandardSearch from '@/components/StandardSearch.vue'
-import ImprovedSearch from '@/components/ImprovedSearchOptions.vue'
+import Imperative from '@/components/Imperative.vue'
+import Declarative from '@/components/Declarative.vue'
 
 const routes = [
   {
@@ -13,24 +13,21 @@ const routes = [
   },
   {
     path: '/one',
-    component: StandardSearch,
-    meta: {
-      transition: 'none'
-    }
+    component: Imperative,
   },
   {
     path: '/two',
-    component: ImprovedSearch,
+    component: Declarative,
     props: true
   },
   {
     path: '/two/:term',
-    component: ImprovedSearch,
+    component: Declarative,
     props: true
   },
   {
     path: '/two/:term/results',
-    component: ImprovedSearch,
+    component: Declarative,
     props: true
   }
 ]

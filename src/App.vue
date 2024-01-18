@@ -43,7 +43,7 @@ body, button, input, textarea {
   border-radius: 5px; /* Slightly rounded corners */
 }
 
-.search-button {
+.search-button, button {
   padding: 0.5rem 1.5rem;
   background-color: #4CAF75; /* Green color */
   border: none;
@@ -68,6 +68,18 @@ body, button, input, textarea {
     transform: scale(1.05);
     background-color: #3e8e41 !important;
   }
+}
+button {
+  padding: 0.5rem 0.25rem;
+}
+
+.button-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.fixie {
+  width: 22%;
 }
 
 .search-button:hover {
