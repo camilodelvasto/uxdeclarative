@@ -21,12 +21,7 @@ const routes = [
     props: true
   },
   {
-    path: '/two/:term',
-    component: Declarative,
-    props: true
-  },
-  {
-    path: '/two/:term/results',
+    path: '/two/id/:seed/ben/:ben/claim/:claim/',
     component: Declarative,
     props: true
   }

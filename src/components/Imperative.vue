@@ -7,7 +7,7 @@
       <button @click="clearData" class="fixie" :disabled="isClearDataDisabled">Clear<br>Data</button>
     </div>
     <div class="results">
-      <div class="seed">Policy ID: {{ isGenerating ? 'Generating...' : '' }}  {{ seed !== null ? seed : '--' }}</div>
+      <div class="seed">Policy ID: {{ isGenerating ? 'Generating...' : '' }}  {{ seed !== null ? seed : '' }}</div>
       <transition name="fade">
         <div v-if="imageUrl">
           <div class="user" v-if="user && imageUrl">
@@ -45,7 +45,6 @@ const isClearDataDisabled = ref(true);
 const hasAdditionalBeneficiaries = ref(false);
 const hasClaim = ref(false);
 
-
 const generateSeed = async () => {
   if (isGenerating) {
     return;
@@ -54,7 +53,7 @@ const generateSeed = async () => {
   isAborted = false;
   isGenerating = true;
   seed.value = null;
-  const delay = Math.floor(Math.random() * 5000);
+  const delay = Math.floor(Math.random() * 2000);
   await new Promise((resolve) => setTimeout(resolve, delay));
 
   if (!isAborted) {
@@ -72,10 +71,12 @@ const generateSeed = async () => {
 
 const addBeneficiary = () => {
   hasAdditionalBeneficiaries.value = true;
+  isAddBeneficiaryDisabled.value = true;
 };
 const fileClaim = () => {
   hasClaim.value = true;
   isAddBeneficiaryDisabled.value = true;
+  isFileClaimDisabled.value = true;
 };
 const clearData = () => {
   seed.value = null;

@@ -7,13 +7,13 @@
       <button @click="handleClearData" class="fixie" :disabled="isClearDataDisabled">Clear<br>Data</button>
     </div>
     <div class="results">
-      <div class="seed">Policy ID: {{ isGenerating ? 'Generating...' : '' }}  {{ seed !== null ? seed : '--' }}</div>
+      <div class="seed">Policy ID: {{ isGenerating ? 'Generating...' : '' }}  {{ seed !== null ? seed : '' }}</div>
       <transition name="fade">
-        <div v-if="imageUrl">
+        <div v-if="imageUrl || true">
           <div class="user" v-if="user && imageUrl">
             <h3>{{ user.name }}
               <span class="alignr">
-                <span v-if="hasAdditionalBeneficiaries">[ b ]</span> <span v-if="hasClaim">[ c ]</span>
+                <span v-if="hasBeneficiaryAdded">[ b ]</span> <span v-if="hasClaimFiled">[ c ]</span>
               </span>
             </h3>
             <p><span class="left">Email:</span><span class="right">{{ user.email }}</span></p>
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { watch, ref, computed, onMounted } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
@@ -38,69 +38,57 @@ const route = useRoute();
 const router = useRouter();
 
 // Reactive State
-const seed = ref(null);
+const seed = ref(route.params.seed || null);
 const user = ref(null);
-const isAborted = ref(false);
 const isGenerating = ref(false);
 
-// Derived State from Query Params
-const isCreatePolicyDisabled = computed(() => route.query.cpd === 'true');
-const isAddBeneficiaryDisabled = computed(() => route.query.abd === 'true');
-const isFileClaimDisabled = computed(() => route.query.fcd === 'true');
-const isClearDataDisabled = computed(() => route.query.cld === 'true');
-const hasAdditionalBeneficiaries = computed(() => route.query.hab === 'true');
-const hasClaim = computed(() => route.query.hc === 'true');
+// Derived State from Route Params
+const hasBeneficiaryAdded = computed(() => route.params.ben === '1');
+const hasClaimFiled = computed(() => route.params.claim === '1');
 
-// Update Query Params
-const updateQueryParams = (params, newSeed = null) => {
-  if (newSeed !== null) {
-    seed.value = newSeed;
+// New computed properties based on route parameters
+const isCreatePolicyDisabled = computed(() => seed.value !== null);
+const isAddBeneficiaryDisabled = computed(() => seed.value === null || hasBeneficiaryAdded.value || hasClaimFiled.value);
+const isFileClaimDisabled = computed(() => seed.value === null || hasClaimFiled.value);
+const isClearDataDisabled = computed(() => seed.value === null);
+
+// Navigate to new path
+const navigate = (updates) => {
+  const newRoute = {
+    ...route.params,
+    ...updates
+  };
+  if (newRoute.seed === null) {
+    return router.push('/two');
   }
-  router.replace({ query: { ...route.query, ...params, seed: seed.value } });
+  router.push(`/two/id/${newRoute.seed}/ben/${newRoute.ben}/claim/${newRoute.claim}`);
 };
 
 // Event Handlers
-const handleCreatePolicy = () => {
-  updateQueryParams({ cpd: 'true', abd: 'false', fcd: 'false', cld: 'false' });
+const handleCreatePolicy = async () => {
   isGenerating.value = true;
+  const delay = Math.floor(Math.random() * 2000);
+  await new Promise((resolve) => setTimeout(resolve, delay));
+
+  const newSeed = Math.floor(Math.random() * 10) + 1;
+  seed.value = newSeed;
+  navigate({ seed: newSeed, ben: '0', claim: '0' });
+  isGenerating.value = false;
 };
 
 const handleAddBeneficiary = () => {
-  updateQueryParams({ hab: 'true' });
+  navigate({ ben: '1' });
 };
 
 const handleFileClaim = () => {
-  updateQueryParams({ hc: 'true', abd: 'true', fcd: 'true' });
+  navigate({ claim: '1' });
 };
 
 const handleClearData = () => {
-  updateQueryParams({ cpd: 'false', abd: 'true', fcd: 'true', cld: 'true', hab: 'false', hc: 'false' });
   seed.value = null;
   user.value = null;
+  navigate({ seed: null, ben: '0', claim: '0' });
 };
-
-// Watchers
-watch(isGenerating, async (newVal) => {
-  if (newVal) {
-    isAborted.value = false;
-    const delay = Math.floor(Math.random() * 5000);
-    await new Promise((resolve) => setTimeout(resolve, delay));
-
-    if (!isAborted.value) {
-      seed.value = Math.floor(Math.random() * 10) + 1;
-      const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${seed.value}`);
-      user.value = response.data;
-    }
-    isGenerating.value = false;
-  }
-});
-
-onMounted(() => {
-  if (route.query.seed) {
-    seed.value = route.query.seed;
-    fetchUserData(seed.value);
-  }
-});
 
 const fetchUserData = async (userId) => {
   try {
@@ -110,6 +98,14 @@ const fetchUserData = async (userId) => {
     console.error('Error fetching user data:', error);
   }
 };
+
+// Watchers
+watch(() => route.params.seed, (newSeed) => {
+  if (newSeed) {
+    fetchUserData(newSeed);
+  }
+}, { immediate: true });
+
 
 // Image URL Computed Property
 const imageUrl = computed(() => {
@@ -127,6 +123,7 @@ const handleImageError = () => {
 };
 
 </script>
+
 
 <style scoped>
 </style>
