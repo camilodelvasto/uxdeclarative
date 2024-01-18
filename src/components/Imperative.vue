@@ -1,27 +1,45 @@
 <template>
     <div class="container">
       <div class="button-bar">
-        <button @click="generateSeed" class="fixie">Rand</button>
-        <button @click="decrementSeed" class="fixie">-1</button>
-        <button @click="incrementSeed" class="fixie">+1</button>
-        <button @click="abort" class="fixie">Abort</button>
+        <button @click="generateSeed" class="fixie" disabled="isCreatePolicyDisabled">Create Policy</button>
+        <button @click="addBeneficiary" class="fixie" disabled="isAddBeneficiaryDisabled">Add Beneficiary</button>
+        <button @click="fileClaim" class="fixie" disabled="isFileClaimDisabled">File <br>Claim</button>
+        <button @click="clearData" class="fixie" disabled="isClearDataDisabled">Clear<br>Data</button>
       </div>
       <div class="results">
-        <div class="seed">Seed: {{ seed !== null ? seed : '--' }}</div>
-        <div class="image">
-          <img v-if="imageUrl" :src="imageUrl" @error="handleImageError" />
-          <div v-else class="placeholder">No image</div>
-        </div>
+        <div class="seed">Policy ID: {{ seed !== null ? seed : '--' }}</div>
+        <transition name="fade">
+          <div v-if="imageUrl">
+            <div class="user" v-if="user && imageUrl">
+              <h3>{{ user.name }}</h3>
+              <p><span class="left">Email:</span><span class="right">{{ user.email }}</span></p>
+              <p><span class="left">Address:</span><span class="right">{{ user.address.street }}, {{ user.address.city }}</span></p>
+              <p><span class="left">Phone:</span><span class="right">{{ user.phone }}</span></p>
+            </div>
+            <div class="image">
+              <img v-if="imageUrl" :src="imageUrl" @error="handleImageError" />
+            </div>
+          </div>
+        </transition>
       </div>
     </div>
   </template>
   
 <script setup>
 import { computed, ref } from 'vue'
+import axios from 'axios';
 
 const seed = ref(null);
 let isAborted = false;
 let isGenerating = false;
+let user = ref(null);
+
+let isCreatePolicyDisabled = ref(false);
+let isAddBeneficiaryDisabled = ref(false);
+let isFileClaimDisabled = ref(false);
+let isClearDataDisabled = ref(false);
+
+
 
 const generateSeed = async () => {
   if (isGenerating) {
@@ -35,37 +53,21 @@ const generateSeed = async () => {
   await new Promise((resolve) => setTimeout(resolve, delay));
 
   if (!isAborted) {
-    seed.value = Math.floor(Math.random() * 1000) + 1;
+    seed.value = Math.floor(Math.random() * 10) + 1;
+
+    const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${seed.value}`);
+    user.value = response.data;
+
   }
   isGenerating = false;
 };
 
-const incrementSeed = () => {
-  if (seed.value === null) {
-    generateSeed();
-  } else {
-    seed.value = (seed.value + 1) % 1001;
-  }
-};
-const decrementSeed = () => {
-  if (seed.value === null) {
-    generateSeed();
-  } else {
-    seed.value = seed.value - 1;
-    if (seed.value < 0) {
-      seed.value = 1000;
-    }
-  }
-};
-const abort = () => {
-  isAborted = true;
-  isGenerating = false;
-  seed.value = null;
-};
+
+
 
 const imageUrl = computed(() => {
   if (seed.value !== null && !isNaN(seed.value)) {
-    return `https://picsum.photos/id/${seed.value}/400`;
+    return `https://picsum.photos/id/12${seed.value}/400`;
   }
   return null;
 });

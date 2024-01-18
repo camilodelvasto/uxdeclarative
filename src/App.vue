@@ -22,7 +22,7 @@ body, button, input, textarea {
 .container {
   margin: auto;
   width: 400px;
-  margin-top: 200px;
+  margin-top: 5%;
   &.legato {
     transition: all 0.2s ease-in-out;
   }
@@ -71,6 +71,12 @@ body, button, input, textarea {
 }
 button {
   padding: 0.5rem 0.25rem;
+  transition: all 0.1s ease-in-out;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: #ccc;
+  }
 }
 
 .button-bar {
@@ -80,6 +86,8 @@ button {
 }
 .fixie {
   width: 22%;
+  line-height: 1.1;
+  height: 4rem;
 }
 
 .search-button:hover {
@@ -98,5 +106,24 @@ button {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.user {
+  margin-bottom: 1rem;
+  h3 {
+    margin-bottom: 0.2em;
+  }
+  p {
+    line-height: 1;
+    margin-bottom: 0.4rem;
+    margin-top: 0;
+    span.left {
+      width: 25%;
+      display: inline-block;
+    }
+    span.right {
+      font-weight: bold;
+    }
+  }
 }
 </style>
