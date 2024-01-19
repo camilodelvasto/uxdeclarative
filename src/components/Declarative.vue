@@ -48,7 +48,7 @@ const seed = computed(() => route.params.seed || null);
 const beneficiaryCount = computed(() => parseInt(route.params.ben) || 0);
 const hasClaimFiled = computed(() => route.params.claim === '1');
 
-// New computed properties based on route parameters
+// Computed properties based on route parameters
 const isCreatePolicyDisabled = computed(() => seed.value !== null);
 const isAddBeneficiaryDisabled = computed(() => seed.value === null || beneficiaryCount.value > 4 || hasClaimFiled.value);
 const isFileClaimDisabled = computed(() => seed.value === null || hasClaimFiled.value);
